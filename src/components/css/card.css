@@ -1,0 +1,237 @@
+/* Base alinhada ao formulário: card branco, bordas 16px, sombra suave, borda discreta */
+.card {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  font-family: "Montserrat", sans-serif;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #f5f5f5;
+}
+
+/* Botão editar: canto superior esquerdo (só na tela de cadastro, quando onEdit é passado) */
+.btn-edit-card {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.btn-edit-card:hover,
+.btn-edit-card:focus {
+  background: rgba(173, 60, 44, 0.9);
+}
+
+.btn-edit-card .edit-icon {
+  color: #fff;
+  display: block;
+  background: transparent;
+}
+
+/* Botão excluir: centro da imagem (só na tela de cadastro, quando onDelete é passado) */
+.btn-delete-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 28px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s ease;
+}
+
+.btn-delete-card:hover,
+.btn-delete-card:focus {
+  background: rgba(173, 60, 44, 0.9);
+}
+
+.btn-delete-card .trash-icon {
+  color: #fff;
+  display: block;
+  background: transparent;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: block;
+  object-fit: cover;
+}
+
+.price-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #AD3C2C;
+  color: #fff;
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  letter-spacing: 0.02em;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(173, 60, 44, 0.35);
+}
+
+.card-fotos-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Bolinhas do carrossel (catálogo): centro em baixo da imagem */
+.card-dots{
+  position:absolute;
+  bottom:10px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:6px;
+  z-index:2;
+}
+
+.card-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.card-dot:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.card-dot.ativo {
+  background: #fff;
+  transform: scale(1.25);
+}
+
+.card-meta {
+  padding: 12px 16px 0;
+  font-size: 0.8rem;
+  color: #6b6b6b;
+  font-weight: 500;
+  min-height: 20px;
+}
+
+.card-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  gap: 8px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  color: #2d2d2d;
+}
+
+.value.red {
+  color: #AD3C2C;
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background: #eee;
+  flex-shrink: 0;
+}
+.card-arrow{
+  position:absolute;
+  top:50%;
+  z-index: 3;
+  transform:translateY(-50%);
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  border:none;
+  background:rgba(0,0,0,0.45);
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card-arrow.left{
+  left:10px;
+}
+
+.card-arrow.right{
+  right:10px;
+}
+.card-arrow{
+  opacity:0;
+  transition:0.2s;
+}
+
+.card:hover .card-arrow{
+  opacity:1;
+}
+@media (hover: none) {
+  .card-arrow{
+    display:none;
+  }
+}

@@ -1,0 +1,163 @@
+/* Fundo escuro */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.114);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+  z-index: 3000;
+}
+
+.popup-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background: #fff;
+  padding: 30px;
+  position: relative;
+  width: 85%;
+  max-width: 420px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.popup-titulo {
+  font-size: 1.4rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+
+.popup-input:focus {
+  border-color: #c1473d;
+}
+
+.popup-select {
+  margin-bottom: 20px;
+}
+
+.popup-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.btn-limpar {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #999;
+  color: #fff;
+  cursor: pointer;
+}
+
+.btn-filtrar {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #c1473d;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-filtrar:hover {
+  background: #a53731;
+}
+
+.filtro-preco {
+  margin-top: 15px;
+}
+
+.preco-topo {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.preco-min,
+.preco-max {
+  color: #e53935;
+}
+
+/* WRAPPER DO SLIDER */
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  height: 6px;
+  background-color: #cfcfcf;
+  border-radius: 4px;
+}
+
+/* BARRA VERMELHA PREENCHIDA */
+.slider-fill {
+  position: absolute;
+  height: 100%;
+  background-color: #e53935;
+  border-radius: 4px;
+  top: 0;
+  left: 0;
+  transition: width 0.1s linear; /* suave */
+}
+
+/* O INPUT RANGE REAL (invisível, só a bolinha aparece) */
+.slider-input {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  appearance: none;
+  height: 6px;
+  background: transparent;
+  pointer-events: all;
+}
+
+/* BOLINHA */
+.slider-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #e53935;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  margin-top: -6px; /* CENTRALIZA */
+}
+
+.slider-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: #e53935;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #c1473d;
+  cursor: pointer;
+  z-index: 9999;
+  transition: transform .15s ease;
+}
+
+.popup-close:hover {
+  transform: scale(1.2);
+}

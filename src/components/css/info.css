@@ -1,0 +1,9 @@
+.info-texto{
+    color: rgba(255, 255, 255, 0.436);
+    position: relative;
+    z-index: 30;
+    text-align: center;
+    font-size: 100%;
+    font-weight: 500;
+    top: 0;
+}

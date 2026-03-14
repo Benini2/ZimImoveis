@@ -1,0 +1,34 @@
+.catalogo {
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll; 
+  overflow-x: hidden;
+}
+.cards-grid {
+  display: grid;
+  gap: 50px;
+  margin-bottom: 50px;
+  grid-template-columns: 1fr;
+}
+
+
+
+@media (min-width: 600px) and (max-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+.nao-encontrado {
+  margin-top: 20px;
+  text-align: center;
+  color: #cc0000;
+  font-size: 20px;
+  font-weight: bold;
+}

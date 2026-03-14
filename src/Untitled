@@ -1,0 +1,236 @@
+import { useState, useEffect } from "react";
+import Card from "./components/Card";
+import "./cadastroimoveis.css";
+import { FaImage } from "react-icons/fa6";
+import { IoIosArrowDown } from "react-icons/io";
+import Select from "react-select";
+
+const estados = ["AC","AL","AP","AM","BA","CE","DF","ES","GO",
+"MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
+
+const tipo = ["Casa", "Apartamento", "Sala Comercial", "Estudio", "Terreno"];
+
+const opcoesEstrutura = ["Piscina","Churrasqueira","Salão de festas","Lavanderia","Sacada","Quintal"];
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+export default function CadastroImoveis() {
+  const [imoveis, setImoveis] = useState([]);
+  const [erros, setErros] = useState({});
+  const [editandoId, setEditandoId] = useState(null);
+  const [estruturaAberta, setEstruturaAberta] = useState(false);
+
+  const [form, setForm] = useState({
+    nome: "", preco: "", imagens: [], quartos: "", suites: "", vagas: "", area: "",
+    bairro: "", cidade: "", estado: null, tipo: null, estrutura: [],
+  });
+
+  useEffect(() => {
+    const data = localStorage.getItem("imoveis");
+    if (data) setImoveis(JSON.parse(data));
+  }, []);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    if (name === "preco") {
+      const valorLimpo = value.replace(/\D/g, "");
+      setForm({ ...form, [name]: valorLimpo });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+    if (erros[name]) setErros({ ...erros, [name]: false });
+  }
+
+  function handleSelectChange(option, actionMeta) {
+    setForm({ ...form, [actionMeta.name]: option || null });
+    if (erros[actionMeta.name]) setErros({ ...erros, [actionMeta.name]: false });
+  }
+
+  async function handleCapa(e) {
+    const files = e.target.files;
+    if (!files?.length) return;
+    try {
+      const urls = await Promise.all([...Array.from(files)].map(fileToDataUrl));
+      const novas = form.imagens.length === 0 ? urls : [urls[0], ...form.imagens.slice(1)];
+      setForm({ ...form, imagens: novas });
+      if (erros.imagens) setErros({ ...erros, imagens: false });
+    } catch (err) {
+      console.error(err);
+    }
+    e.target.value = "";
+  }
+
+  async function handleMaisFotos(e) {
+    const files = e.target.files;
+    if (!files?.length) return;
+    try {
+      const urls = await Promise.all([...Array.from(files)].map(fileToDataUrl));
+      setForm({ ...form, imagens: [...form.imagens, ...urls] });
+      if (erros.imagens) setErros({ ...erros, imagens: false });
+    } catch (err) {
+      console.error(err);
+    }
+    e.target.value = "";
+  }
+
+  function removerImagem(index) {
+    const novas = form.imagens.filter((_, i) => i !== index);
+    setForm({ ...form, imagens: novas });
+    if (erros.imagens && novas.length > 0) setErros({ ...erros, imagens: false });
+  }
+
+  function toggleEstrutura(item) {
+    if (form.estrutura.includes(item)) {
+      setForm({ ...form, estrutura: form.estrutura.filter(i => i !== item) });
+    } else {
+      setForm({ ...form, estrutura: [...form.estrutura, item] });
+    }
+  }
+
+  function removerEstrutura(item) {
+    setForm({ ...form, estrutura: form.estrutura.filter(i => i !== item) });
+  }
+
+  function validarFormulario() {
+    const novosErros = {};
+    if (!form.nome?.trim()) novosErros.nome = true;
+    if (!form.preco?.trim()) novosErros.preco = true;
+    if (!form.imagens || form.imagens.length < 3) novosErros.imagens = true;
+    if (!form.quartos && form.quartos !== 0) novosErros.quartos = true;
+    if (!form.suites && form.suites !== 0) novosErros.suites = true;
+    if (!form.vagas && form.vagas !== 0) novosErros.vagas = true;
+    if (!form.area?.trim()) novosErros.area = true;
+    if (!form.bairro?.trim()) novosErros.bairro = true;
+    if (!form.cidade?.trim()) novosErros.cidade = true;
+    if (!form.estado) novosErros.estado = true;
+    if (!form.tipo) novosErros.tipo = true;
+    if (!form.estrutura?.length) novosErros.estrutura = true;
+    setErros(novosErros);
+    return Object.keys(novosErros).length === 0;
+  }
+
+  function adicionarImovel() {
+    if (!validarFormulario()) return;
+
+    const novoImovel = { 
+      id: editandoId || Date.now(),
+      ...form,
+      imagens: [...form.imagens],
+      img: form.imagens[0],
+      estado: form.estado?.value || null,
+      tipo: form.tipo?.value || null,
+      estrutura: [...form.estrutura],
+    };
+
+    let atualizados;
+    if (editandoId) {
+      atualizados = imoveis.map(i => i.id === editandoId ? novoImovel : i);
+      setEditandoId(null);
+    } else {
+      atualizados = [...imoveis, novoImovel];
+    }
+
+    setImoveis(atualizados);
+    localStorage.setItem("imoveis", JSON.stringify(atualizados));
+
+    setForm({
+      nome: "", preco: "", imagens: [], quartos: "", suites: "", vagas: "", area: "",
+      bairro: "", cidade: "", estado: null, tipo: null, estrutura: [],
+    });
+    setErros({});
+  }
+
+  function editar(id) {
+    const imovel = imoveis.find(i => i.id === id);
+    if (!imovel) return;
+
+    const optionsEstados = estados.map(uf => ({ value: uf, label: uf }));
+    const optionsTipo = tipo.map(t => ({ value: t, label: t }));
+
+    setForm({
+      nome: imovel.nome || "",
+      preco: imovel.preco?.replace(/\D/g, "") || "",
+      imagens: Array.isArray(imovel.imagens) ? imovel.imagens : (imovel.img ? [imovel.img] : []),
+      quartos: imovel.quartos || "",
+      suites: imovel.suites || "",
+      vagas: imovel.vagas || "",
+      area: imovel.area?.replace(/\D/g, "") || "",
+      bairro: imovel.bairro || "",
+      cidade: imovel.cidade || "",
+      estado: imovel.estado ? optionsEstados.find(opt => opt.value === imovel.estado) : null,
+      tipo: imovel.tipo ? optionsTipo.find(opt => opt.value === imovel.tipo) : null,
+      estrutura: Array.isArray(imovel.estrutura) ? imovel.estrutura : [],
+    });
+    setEditandoId(id);
+    setErros({});
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function deletar(id) {
+    const filtrados = imoveis.filter(i => i.id !== id);
+    setImoveis(filtrados);
+    localStorage.setItem("imoveis", JSON.stringify(filtrados));
+    if (editandoId === id) {
+      setEditandoId(null);
+      setForm({
+        nome: "", preco: "", imagens: [], quartos: "", suites: "", vagas: "", area: "",
+        bairro: "", cidade: "", estado: null, tipo: null, estrutura: [],
+      });
+    }
+  }
+
+  const optionsEstados = estados.map(uf => ({ value: uf, label: uf }));
+  const optionsTipo = tipo.map(t => ({ value: t, label: t }));
+
+  const customSelectStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderRadius: 8,
+      border: state.isFocused ? "1.8px solid #c1473d" : "1.8px solid #ccc",
+      minHeight: 46,
+      fontSize: "1rem",
+      boxShadow: state.isFocused ? "0 0 6px rgba(193, 71, 61, 0.5)" : "none",
+      cursor: "pointer"
+    }),
+    menu: base => ({ ...base, zIndex: 9999 }),
+  };
+
+  return (
+    <div className="container">
+      <h1 className="titulo">{editandoId ? "Editar Imóvel" : "Cadastro de Imóveis"}</h1>
+      <p className="subtitulo">{editandoId ? "Altere os dados abaixo e salve as alterações." : "Preencha os dados abaixo para adicionar um novo imóvel ao catálogo."}</p>
+
+      <div className="main-content">
+        {/* Formulário */}
+        <div className="form-card">
+          {/* Aqui entra todo o JSX do formulário que você já possui */}
+          {/* ...mantido igual ao seu código existente... */}
+        </div>
+
+        {/* Lista de imóveis */}
+        <div className="cards-lista">
+          <h2 className="titulo">Imóveis Cadastrados</h2>
+          {imoveis.length === 0 ? (
+            <div className="empty-state">
+              <p>Nenhum imóvel cadastrado ainda.</p>
+              <p>Use o formulário acima para adicionar o primeiro.</p>
+            </div>
+          ) : (
+            imoveis.map(item => (
+              <div key={item.id} className="card-wrapper">
+                <Card {...item} onDelete={deletar} onEdit={editar} />
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

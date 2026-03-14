@@ -1,0 +1,218 @@
+  .home {
+    width: 100%;
+      height: 100vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #f8f7f5;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  /* CONTEÚDO */
+  .home-conteudo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0 16px;
+    text-align: center;
+    z-index: 2;
+  }
+
+  .legenda-home {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+    font-size: 30px;
+    line-height: 38px;
+    color: #3e3e3e;
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+  
+  .type-line {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    opacity: 0; 
+    padding-right: 6px;
+  }
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+  
+  @keyframes blink {
+    50% {
+      border-color: transparent;
+    }
+  }
+  @keyframes show {
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes hideCursor {
+    to {
+      border-right-color: transparent;
+    }
+  }
+  /* Linha 1 */
+.line-1 {
+  opacity: 1;
+  border-right: 3px solid #c0392b;
+
+  animation:
+    typing 2.2s steps(18, end) forwards,
+    blink 0.8s step-end infinite,
+    hideCursor 0.1s forwards 2.2s;
+}
+
+/* Linha 2 */
+.line-2 {
+  border-right: 3px solid #c0392b;
+
+  animation:
+  show 0s forwards 2.3s,
+    typing 2s steps(14, end) forwards 2.4s,
+    blink 0.8s step-end infinite 2.4s,
+    hideCursor 0.1s forwards 4.4s;
+}
+
+  /* CARD */
+  .home-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 360px;
+    padding: 24px 20px 28px;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  }
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .home-conteudo {
+    animation: fadeUp 0.9s ease-out both;
+  }
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+  }
+  
+  .home-card {
+    animation:
+      scaleFade 0.8s ease-out both,
+      float 7s ease-in-out infinite;
+  }
+    
+  /* NÚMEROS */
+  .home-numeros {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .home-numeros div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .home-numeros strong {
+    font-size: 22px;
+    color: #c0392b;
+  }
+
+  .home-numeros span {
+    font-size: 12px;
+    color: #777;
+  }
+
+  /* BOTÃO */
+  .home-btn {
+    display: block;
+    background: #bf0404;
+    color: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .home-btn {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  .home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(192, 57, 43, 0.35);
+  }
+  
+  .home-btn:active {
+    transform: translateY(0);
+  }
+  
+
+  /* FUNDO */
+  .home-fundo {
+    position: absolute;
+    bottom: -180px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180%;
+    height: 360px;
+    background: linear-gradient(135deg, #bf0404, #8c0303);
+    border-radius: 50%;
+    z-index: 1;
+    overflow: hidden;
+  }
+  @keyframes wave {
+    0% {
+      transform: translateX(-50%) scale(1);
+    }
+    50% {
+      transform: translateX(-50%) scale(1.2);
+    }
+    100% {
+      transform: translateX(-50%) scale(1);
+    }
+  }
+  
+  .home-fundo {
+    animation: wave 7s ease-in-out infinite;
+  }
+  
+
+  /* TABLET */
+  @media (min-width: 600px) {
+    .legenda-home {
+      font-size: 46px;
+      line-height: 64px;
+    }
+
+    .home-card {
+      max-width: 520px;
+      padding: 32px;
+    }
+
+    .home-numeros strong {
+      font-size: 28px;
+    }
+  }
