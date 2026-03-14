@@ -4,8 +4,7 @@ import cors from "cors";
 import { db } from "../db.js";
 import jwt from "jsonwebtoken";
 
-dotenv.config({ path: "../.env" });
-
+dotenv.config();
 const app = express();
 
 app.use(cors());
@@ -267,6 +266,4 @@ function verificarToken(req, res, next) {
 
 }
 
-app.listen(3333, "0.0.0.0", () => {
-  console.log("🚀 Backend rodando na porta 3333");
-});
+export default app;
