@@ -72,7 +72,7 @@ app.post("/imoveis", verificarToken, async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 8800;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Servidor: http://localhost:${PORT}`);
 });

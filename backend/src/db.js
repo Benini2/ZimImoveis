@@ -10,7 +10,9 @@ const config = {
   password: url.password,
   database: url.pathname.slice(1),
   connectionLimit: 10,
-  ssl: { rejectUnauthorized: false }
+  ssl: {
+    mode: "required"
+  }
 };
 
 const pool = mysql.createPool(config);
