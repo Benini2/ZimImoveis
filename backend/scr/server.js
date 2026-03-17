@@ -6,6 +6,18 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 
+async function testeConexaoInicial() {
+  try {
+    const [rows] = await pool.query("SELECT 1 + 1 AS resultado");
+    console.log("✅ Conexão com banco OK:", rows[0].resultado);
+  } catch (err) {
+    console.error("❌ Erro inicial conexão:", err.message);
+    process.exit(1);
+  }
+}
+
+testeConexaoInicial();
+
 const app = express();
 
 app.use(cors());
