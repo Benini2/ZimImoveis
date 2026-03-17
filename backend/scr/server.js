@@ -1,20 +1,28 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { db } from "../db.js";
+import db from "../db.js";
 import jwt from "jsonwebtoken";
 
 dotenv.config();
+
 const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-// TESTE
+////////////////////////////////////////////////////
+// TESTE API
+////////////////////////////////////////////////////
+
 app.get("/", (req, res) => {
-  res.json({ ok: true });
+  res.json({ ok: true, message: "API funcionando" });
 });
+
+////////////////////////////////////////////////////
+// FUNÇÃO AUXILIAR
+////////////////////////////////////////////////////
 
 function safeParse(value) {
   if (!value) return [];
@@ -32,9 +40,11 @@ function safeParse(value) {
 
 app.get("/imoveis", async (req, res) => {
   try {
+
     const [rows] = await db.query("SELECT * FROM imoveis");
 
     const imoveisFormatados = rows.map((item) => {
+
       let estrutura = safeParse(item.estrutura);
       let imagens = safeParse(item.imagens);
 
@@ -46,6 +56,7 @@ app.get("/imoveis", async (req, res) => {
         estrutura,
         imagens
       };
+
     });
 
     res.json(imoveisFormatados);
@@ -61,7 +72,9 @@ app.get("/imoveis", async (req, res) => {
 ////////////////////////////////////////////////////
 
 app.post("/imoveis", verificarToken, async (req, res) => {
+
   try {
+
     let {
       nome,
       preco,
@@ -118,8 +131,9 @@ app.post("/imoveis", verificarToken, async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ erro: "Erro ao salvar" });
+    res.status(500).json({ erro: "Erro ao salvar imóvel" });
   }
+
 });
 
 ////////////////////////////////////////////////////
@@ -127,6 +141,7 @@ app.post("/imoveis", verificarToken, async (req, res) => {
 ////////////////////////////////////////////////////
 
 app.put("/imoveis/:id", verificarToken, async (req, res) => {
+
   const { id } = req.params;
 
   const {
@@ -189,6 +204,7 @@ app.put("/imoveis/:id", verificarToken, async (req, res) => {
     console.error(err);
     res.status(500).json({ erro: "Erro ao atualizar imóvel" });
   }
+
 });
 
 ////////////////////////////////////////////////////
@@ -196,9 +212,11 @@ app.put("/imoveis/:id", verificarToken, async (req, res) => {
 ////////////////////////////////////////////////////
 
 app.delete("/imoveis/:id", verificarToken, async (req, res) => {
+
   const { id } = req.params;
 
   try {
+
     await db.query("DELETE FROM imoveis WHERE id = ?", [id]);
 
     res.json({ message: "Imóvel deletado com sucesso" });
@@ -207,6 +225,7 @@ app.delete("/imoveis/:id", verificarToken, async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "Erro ao deletar imóvel" });
   }
+
 });
 
 ////////////////////////////////////////////////////
@@ -215,7 +234,7 @@ app.delete("/imoveis/:id", verificarToken, async (req, res) => {
 
 app.post("/login", async (req, res) => {
 
-  const { email, senha} = req.body;
+  const { email, senha } = req.body;
 
   try {
 
@@ -248,6 +267,11 @@ app.post("/login", async (req, res) => {
   }
 
 });
+
+////////////////////////////////////////////////////
+// VERIFICAR TOKEN
+////////////////////////////////////////////////////
+
 function verificarToken(req, res, next) {
 
   const authHeader = req.headers.authorization;
@@ -258,12 +282,25 @@ function verificarToken(req, res, next) {
   const token = authHeader.split(" ")[1];
 
   try {
+
     jwt.verify(token, process.env.JWT_SECRET);
+
     next();
+
   } catch {
+
     res.status(403).json({ erro: "Token inválido" });
+
   }
 
 }
 
-export default app;
+////////////////////////////////////////////////////
+// PORTA DO SERVIDOR
+////////////////////////////////////////////////////
+
+const PORT = process.env.PORT || 8800;
+
+app.listen(PORT, () => {
+  console.log("Servidor rodando na porta", PORT);
+});
