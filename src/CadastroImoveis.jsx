@@ -90,7 +90,7 @@
         useEffect(() => {
           async function buscarImoveis() {
             try {
-              const response = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
+              const response = await fetch("https://zim-imoveis.up.railway.app/imoveis");
               const data = await response.json();
         
               const dadosNormalizados = data.map((item) => ({
@@ -224,9 +224,10 @@
 
           const token = localStorage.getItem("token");
         
-          const url = editandoId
-            ? `http://localhost:3333/imoveis/${editandoId}`
-            : "http://localhost:3333/imoveis";
+          const BASE_URL = "https://zim-imoveis.up.railway.app";
+const url = editandoId
+  ? `${BASE_URL}/imoveis/${editandoId}`
+  : `${BASE_URL}/imoveis`;
         
           const method = editandoId ? "PUT" : "POST";
         
@@ -259,7 +260,7 @@
             await salvarNoBackend();
         
             // 🔥 Rebuscar do banco após salvar
-            const response = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
+            const response = await fetch("https://zim-imoveis.up.railway.app/imoveis");
             const data = await response.json();
             const dadosNormalizados = data.map((item) => ({
               ...item,
@@ -342,14 +343,14 @@
         
           try {
         
-            await fetch(`https://zimimoveis-production.up.railway.app/imoveis/${id}`, {
-              method: "DELETE",
+            await fetch(`https://zim-imoveis.up.railway.app/imoveis/${id}`, 
+              { method: "DELETE",
               headers: {
                 Authorization: `Bearer ${token}`
               }
             });
         
-            const response = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
+            const response = await fetch("https://zim-imoveis.up.railway.app/imoveis");
             const data = await response.json();
         
             const dadosNormalizados = data.map((item) => ({

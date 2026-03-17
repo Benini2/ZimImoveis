@@ -13,7 +13,7 @@ export default function Login() {
 
   async function fazerLogin() {
 
-    const res = await fetch("https://zimimoveis-production.up.railway.app/imoveis", {
+    const res = await fetch("https://zim-imoveis.up.railway.app/usuario", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
