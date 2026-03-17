@@ -1,7 +1,10 @@
+// src/db.js
 const mysql = require("mysql2/promise");
 require("dotenv").config();
 
 const connectionURL = process.env.MYSQL_PUBLIC_URL;
+if (!connectionURL) throw new Error("⚠️ Variável MYSQL_PUBLIC_URL não definida!");
+
 const url = new URL(connectionURL);
 
 const pool = mysql.createPool({
@@ -13,10 +16,8 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: {
-    mode: "required"
-  },
-  connectTimeout: 10000 // aumenta timeout
+  ssl: { rejectUnauthorized: false },
+  connectTimeout: 10000
 });
 
 pool.getConnection()
