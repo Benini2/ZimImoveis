@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { pool as db } from "../db.js";
+const { pool } = require("../db.js"); 
 import jwt from "jsonwebtoken";
 
 dotenv.config();
@@ -307,13 +307,12 @@ function verificarToken(req, res, next) {
 
 }
 
-// Rota para testar conexão com banco
 app.get("/teste-conexao-banco", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT 1 + 1 AS resultado");
     res.json({ ok: true, resultado: rows[0].resultado });
   } catch (err) {
-    console.error("ERRO NA CONEXÃO COM O BANCO:", err);
+    console.error("ERRO NA CONEXÃO:", err);
     res.status(500).json({ erro: "Erro na conexão com o banco", detalhes: err.message });
   }
 });

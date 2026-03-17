@@ -1,30 +1,34 @@
 // db.js
 import mysql from "mysql2/promise";
 
+// db.js
+const mysql = require("mysql2/promise");
+
 const connectionURL = process.env.MYSQL_PUBLIC_URL;
 
 if (!connectionURL) {
-  throw new Error("MYSQL_PUBLIC_URL não está configurada!");
+  console.error("❌ MYSQL_PUBLIC_URL não configurada!");
+  process.exit(1);
 }
 
-// Parse da URL para objeto de configuração
+// Parse da URL
 const url = new URL(connectionURL);
 const config = {
   host: url.hostname,
-  port: url.port,
+  port: parseInt(url.port),
   user: url.username,
   password: url.password,
-  database: url.pathname.slice(1), // remove a '/'
+  database: url.pathname.slice(1),
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: {
-    rejectUnauthorized: false // importante para Railway
-  }
+  ssl: { rejectUnauthorized: false }
 };
 
-export const pool = mysql.createPool(config);
+const pool = mysql.createPool(config);
 
-console.log("✅ Pool MySQL configurado com sucesso!");
+console.log("✅ Pool MySQL configurado:", config.host);
+
+module.exports = { pool };
 
 export default pool;

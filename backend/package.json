@@ -1,9 +1,9 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "type": "module",
+    "type": "commonjs", 
     "scripts": {
-        "start": "node scr/server.js"
+      "start": "node src/server.js"  
     },
     "dependencies": {
         "bcrypt": "^5.1.0",
