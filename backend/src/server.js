@@ -1,3 +1,4 @@
+// server.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -10,7 +11,7 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-// 🧪 TESTES
+// 🧪 Teste de API
 app.get("/", (req, res) => res.json({ ok: true, message: "API OK!" }));
 
 app.get("/teste-conexao-banco", async (req, res) => {
@@ -33,11 +34,11 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign({ id: rows[0].id }, process.env.JWT_SECRET, { expiresIn: "8h" });
     res.json({ token });
   } catch (err) {
-    res.status(500).json({ erro: "Erro login" });
+    res.status(500).json({ erro: "Erro login", detalhes: err.message });
   }
 });
 
-// 🔐 Middleware token
+// 🔐 Middleware de token
 const verificarToken = (req, res, next) => {
   const auth = req.headers.authorization?.split(" ")[1];
   if (!auth) return res.status(401).json({ erro: "Token necessário" });
@@ -55,7 +56,7 @@ app.get("/imoveis", async (req, res) => {
     const [rows] = await pool.query("SELECT * FROM imoveis");
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ erro: "Erro buscar imóveis" });
+    res.status(500).json({ erro: "Erro buscar imóveis", detalhes: err.message });
   }
 });
 
@@ -68,11 +69,12 @@ app.post("/imoveis", verificarToken, async (req, res) => {
     );
     res.json({ sucesso: true, id: result.insertId });
   } catch (err) {
-    res.status(500).json({ erro: "Erro criar imóvel" });
+    res.status(500).json({ erro: "Erro criar imóvel", detalhes: err.message });
   }
 });
 
+// Porta correta do Express
 const PORT = process.env.PORT || 8800;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`🚀 Servidor: http://localhost:${PORT}`);
+  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
 });
