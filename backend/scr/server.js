@@ -295,20 +295,10 @@ function verificarToken(req, res, next) {
 
 }
 
-app.get("/teste-env", (req, res) => {
-  res.json({
-    host: process.env.MYSQLHOST,
-    user: process.env.MYSQLUSER,
-    password: process.env.MYSQLPASSWORD ? "****" : null,
-    database: process.env.MYSQLDATABASE,
-    port: process.env.MYSQLPORT
-  });
-});
-
+// Rota para testar conexão com banco
 app.get("/teste-conexao-banco", async (req, res) => {
   try {
-    // tenta criar conexão e executar query simples
-    const [rows] = await db.query("SELECT 1 + 1 AS resultado");
+    const [rows] = await pool.query("SELECT 1 + 1 AS resultado");
     res.json({ ok: true, resultado: rows[0].resultado });
   } catch (err) {
     console.error("ERRO NA CONEXÃO COM O BANCO:", err);
