@@ -1,17 +1,12 @@
-// db.js
-import mysql from "mysql2/promise";
-
-// db.js
 const mysql = require("mysql2/promise");
 
 const connectionURL = process.env.MYSQL_PUBLIC_URL;
 
 if (!connectionURL) {
-  console.error("❌ MYSQL_PUBLIC_URL não configurada!");
+  console.error("❌ MYSQL_PUBLIC_URL não encontrada!");
   process.exit(1);
 }
 
-// Parse da URL
 const url = new URL(connectionURL);
 const config = {
   host: url.hostname,
@@ -27,8 +22,6 @@ const config = {
 
 const pool = mysql.createPool(config);
 
-console.log("✅ Pool MySQL configurado:", config.host);
+console.log("✅ Pool conectado:", config.host, config.database);
 
 module.exports = { pool };
-
-export default pool;

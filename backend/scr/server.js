@@ -1,22 +1,28 @@
-import dotenv from "dotenv";
-import express from "express";
-import cors from "cors";
-const { pool } = require("../db.js"); 
-import jwt from "jsonwebtoken";
+const dotenv = require("dotenv");
+const express = require("express");
+const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const { pool } = require("../db.js");  // ← "./db.js" (mesma pasta)
 
 dotenv.config();
 
-async function testeConexaoInicial() {
+const app = express();
+
+app.use(cors());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
+async function testeConexao() {
   try {
     const [rows] = await pool.query("SELECT 1 + 1 AS resultado");
-    console.log("✅ Conexão com banco OK:", rows[0].resultado);
+    console.log("🚀 Banco OK:", rows[0].resultado);
   } catch (err) {
-    console.error("❌ Erro inicial conexão:", err.message);
+    console.error("💥 Erro conexão:", err.message);
     process.exit(1);
   }
 }
 
-testeConexaoInicial();
+testeConexao();
 
 const app = express();
 
@@ -29,8 +35,9 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 ////////////////////////////////////////////////////
 
 app.get("/", (req, res) => {
-  res.json({ ok: true, message: "API funcionando" });
+  res.json({ ok: true, message: "API funcionando!" });
 });
+
 
 ////////////////////////////////////////////////////
 // FUNÇÃO AUXILIAR
