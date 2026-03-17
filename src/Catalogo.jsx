@@ -12,7 +12,7 @@ function Catalogo() {
   const [listaFiltrada, setListaFiltrada] = useState(null); 
 
   useEffect(() => {
-    fetch("http://localhost:3333/imoveis")
+    fetch("https://zimimoveis-production.up.railway.app/imoveis")
       .then(res => res.json())
       .then(data => {
   

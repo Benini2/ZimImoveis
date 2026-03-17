@@ -13,7 +13,7 @@ export default function Login() {
 
   async function fazerLogin() {
 
-    const res = await fetch("http://localhost:3333/login", {
+    const res = await fetch("https://zimimoveis-production.up.railway.app/imoveis", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

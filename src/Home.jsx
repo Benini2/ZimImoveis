@@ -10,7 +10,7 @@ function Home() {
   useEffect(() => {
     async function buscarImoveis() {
       try {
-        const response = await fetch("http://localhost:3333/imoveis");
+        const response = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
         const data = await response.json();
         setImoveis(data);
       } catch (err) {

@@ -90,7 +90,7 @@
         useEffect(() => {
           async function buscarImoveis() {
             try {
-              const response = await fetch("http://localhost:3333/imoveis");
+              const response = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
               const data = await response.json();
         
               const dadosNormalizados = data.map((item) => ({
@@ -259,7 +259,7 @@
             await salvarNoBackend();
         
             // 🔥 Rebuscar do banco após salvar
-            const response = await fetch("http://localhost:3333/imoveis");
+            const response = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
             const data = await response.json();
             const dadosNormalizados = data.map((item) => ({
               ...item,
@@ -342,14 +342,14 @@
         
           try {
         
-            await fetch(`http://localhost:3333/imoveis/${id}`, {
+            await fetch(`https://zimimoveis-production.up.railway.app/imoveis/${id}`, {
               method: "DELETE",
               headers: {
                 Authorization: `Bearer ${token}`
               }
             });
         
-            const response = await fetch("http://localhost:3333/imoveis");
+            const response = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
             const data = await response.json();
         
             const dadosNormalizados = data.map((item) => ({
