@@ -305,6 +305,17 @@ app.get("/teste-env", (req, res) => {
   });
 });
 
+app.get("/teste-conexao-banco", async (req, res) => {
+  try {
+    // tenta criar conexão e executar query simples
+    const [rows] = await db.query("SELECT 1 + 1 AS resultado");
+    res.json({ ok: true, resultado: rows[0].resultado });
+  } catch (err) {
+    console.error("ERRO NA CONEXÃO COM O BANCO:", err);
+    res.status(500).json({ erro: "Erro na conexão com o banco", detalhes: err.message });
+  }
+});
+
 ////////////////////////////////////////////////////
 // PORTA DO SERVIDOR
 ////////////////////////////////////////////////////
