@@ -1,9 +1,8 @@
-// server.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const { pool } = require("./db.js");
+const { pool } = require("./db");
 
 const app = express();
 
@@ -11,26 +10,26 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-// 🧪 Teste de API
+// Teste de API
 app.get("/", (req, res) => res.json({ ok: true, message: "API OK!" }));
 
+// Teste conexão banco
 app.get("/teste-conexao-banco", async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT 1 + 1 AS resultado");
+    const [rows] = await pool.query("SELECT 1+1 AS resultado");
     res.json({ ok: true, resultado: rows[0].resultado });
   } catch (err) {
     res.status(500).json({ erro: "Erro banco", detalhes: err.message });
   }
 });
 
-// 🔐 LOGIN
+// LOGIN
 app.post("/login", async (req, res) => {
   const { email, senha } = req.body;
   try {
-    const [rows] = await pool.query("SELECT * FROM usuario WHERE email = ?", [email]);
-    if (rows.length === 0 || rows[0].senha !== senha) {
+    const [rows] = await pool.query("SELECT * FROM usuario WHERE email=?", [email]);
+    if (!rows.length || rows[0].senha !== senha)
       return res.status(401).json({ erro: "Credenciais inválidas" });
-    }
     const token = jwt.sign({ id: rows[0].id }, process.env.JWT_SECRET, { expiresIn: "8h" });
     res.json({ token });
   } catch (err) {
@@ -38,7 +37,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// 🔐 Middleware de token
+// Middleware token
 const verificarToken = (req, res, next) => {
   const auth = req.headers.authorization?.split(" ")[1];
   if (!auth) return res.status(401).json({ erro: "Token necessário" });
@@ -50,7 +49,7 @@ const verificarToken = (req, res, next) => {
   }
 };
 
-// 🏠 IMÓVEIS
+// IMÓVEIS
 app.get("/imoveis", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM imoveis");
@@ -73,7 +72,6 @@ app.post("/imoveis", verificarToken, async (req, res) => {
   }
 });
 
-// Porta correta do Express
 const PORT = process.env.PORT || 8800;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);
