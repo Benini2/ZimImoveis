@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import db from "../db.js";
+import { pool as db } from "../db.js";
 import jwt from "jsonwebtoken";
 
 dotenv.config();
