@@ -10,7 +10,7 @@ function GaleriaImagens() {
   useEffect(() => {
     async function buscarImovel() {
       try {
-        const res = await fetch("https://zim-imoveis.up.railway.app/imoveis");
+        const res = await fetch("https://zimimoveis-production.up.railway.app/imoveis");
         const data = await res.json();
 
         const encontrado = data.find((item) => item.id === Number(id));
