@@ -295,6 +295,16 @@ function verificarToken(req, res, next) {
 
 }
 
+app.get("/teste-conexao", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT 1 + 1 AS resultado");
+    res.json({ ok: true, resultado: rows[0].resultado });
+  } catch (err) {
+    console.error("ERRO CONEXÃO:", err);
+    res.status(500).json({ erro: "Erro na conexão com o banco", detalhes: err.message });
+  }
+});
+
 ////////////////////////////////////////////////////
 // PORTA DO SERVIDOR
 ////////////////////////////////////////////////////
