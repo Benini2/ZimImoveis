@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "type": "commonjs", 
     "scripts": {
-      "start": "node src/server.js"  
+      "start": "node scr/server.js"  
     },
     "dependencies": {
         "bcrypt": "^5.1.0",
