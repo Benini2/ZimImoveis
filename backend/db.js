@@ -1,11 +1,9 @@
 import mysql from "mysql2/promise";
 
+const connectionURL = process.env.MYSQL_PUBLIC_URL;
+
 export const pool = mysql.createPool({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  database: process.env.MYSQLDATABASE,
-  port: Number(process.env.MYSQLPORT),
+  uri: connectionURL,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
