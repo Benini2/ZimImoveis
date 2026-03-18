@@ -60,12 +60,26 @@ const verificarToken = (req, res, next) => {
 app.get("/imoveis", async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM imoveis");
-    // Normalizar JSON
-    const normalizados = rows.map(r => ({
-      ...r,
-      imagens: JSON.parse(r.imagens || "[]"),
-      estrutura: JSON.parse(r.estrutura || "[]"),
-    }));
+
+    const normalizados = rows.map(r => {
+      let imagens = [];
+      let estrutura = [];
+
+      try {
+        imagens = JSON.parse(r.imagens || "[]");
+      } catch {
+        imagens = typeof r.imagens === "string" ? [r.imagens] : [];
+      }
+
+      try {
+        estrutura = JSON.parse(r.estrutura || "[]");
+      } catch {
+        estrutura = typeof r.estrutura === "string" ? [r.estrutura] : [];
+      }
+
+      return { ...r, imagens, estrutura };
+    });
+
     res.json(normalizados);
   } catch (err) {
     res.status(500).json({ erro: "Erro buscar imóveis", detalhes: err.message });
