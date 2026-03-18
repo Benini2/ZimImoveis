@@ -95,13 +95,10 @@
         
               const dadosNormalizados = data.map((item) => ({
                 ...item,
-                imagens: Array.isArray(item.imagens)
-                  ? item.imagens.map(normalizarImagem)
-                  : [],
-                img_capa: normalizarImagem(item.img_capa),
-              }));
-        
-              setImoveis(dadosNormalizados);
+                imagens: Array.isArray(item.imagens) ? item.imagens : [],
+  img_capa: item.img_capa || (Array.isArray(item.imagens) ? item.imagens[0] : null)
+}));
+setImoveis(dadosNormalizados);
         
             } catch (err) {
               console.error("Erro ao buscar imóveis:", err);

@@ -15,15 +15,11 @@ function Catalogo() {
     fetch("https://zimimoveis-production.up.railway.app/imoveis")
       .then(res => res.json())
       .then(data => {
-  
         const tratados = data.map((item) => ({
           ...item,
-          imagens:
-            typeof item.imagens === "string"
-              ? JSON.parse(item.imagens)
-              : item.imagens || [],
+          imagens: Array.isArray(item.imagens) ? item.imagens : [],
+          img_capa: item.img_capa || (Array.isArray(item.imagens) ? item.imagens[0] : null)
         }));
-  
         setImoveis(tratados);
       });
   }, []);
