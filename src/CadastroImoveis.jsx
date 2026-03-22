@@ -8,16 +8,8 @@ import { useNavigate } from "react-router-dom";
 
 function normalizarImagem(img) {
   if (!img) return "";
-
-  if (typeof img === "object") {
-    img = img.url || img.src || "";
-  }
-
-  if (typeof img !== "string") return "";
-
-  if (img.startsWith("data:")) return img;
-
-  return `data:image/avif;base64,${img}`;
+  if (typeof img === "object") return img.url || img.src || "";
+  return img;
 }
 
 const estados = [
@@ -87,10 +79,8 @@ export default function CadastroImoveis() {
 
         const dadosNormalizados = data.map((item) => ({
           ...item,
-          imagens: Array.isArray(item.imagens)
-            ? item.imagens.map(normalizarImagem)
-            : [],
-          img_capa: normalizarImagem(item.img_capa),
+          imagens: Array.isArray(item.imagens) ? item.imagens : [],
+          img_capa: item.img_capa,
         }));
 
         setImoveis(dadosNormalizados);
@@ -275,10 +265,8 @@ export default function CadastroImoveis() {
 
       const dadosNormalizados = data.map((item) => ({
         ...item,
-        imagens: Array.isArray(item.imagens)
-          ? item.imagens.map(normalizarImagem)
-          : [],
-        img_capa: normalizarImagem(item.img_capa),
+        imagens: Array.isArray(item.imagens) ? item.imagens : [],
+        img_capa: item.img_capa,
       }));
 
       setImoveis(dadosNormalizados);

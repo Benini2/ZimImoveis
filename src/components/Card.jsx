@@ -6,7 +6,7 @@ function normalizarImagem(img) {
   if (!img) return "";
   if (typeof img === "object") return img.url || img.src || "";
   if (typeof img !== "string") return "";
-  return img.startsWith("data:image") ? img : img;
+  return img;
 }
 
 export default function Card({

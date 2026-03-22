@@ -4,6 +4,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import "./detalhes.css";
 import Rodape from "./components/Rodape";
 
+
 function Detalhes() {
   const { id } = useParams();
   const [imovel, setImovel] = useState(null);
@@ -100,6 +101,7 @@ function Detalhes() {
         <img
           src={fotos[fotoAtual]}
           className="detalhes-img"
+          onError={(e) => (e.target.src = "/sem-imagem.png")}
           alt={`Foto ${fotoAtual + 1}`}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
