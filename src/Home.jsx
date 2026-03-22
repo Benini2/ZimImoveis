@@ -28,7 +28,7 @@ function Home() {
       <main className="home-conteudo">
         <h2 className="legenda-home">
           <span className="type-line line-1">Encontre o imóvel</span>
-          <span className="type-line line-2">ideal com a Zim.</span>
+          <span className="type-line line-2">ideal com a ZimImoveis.</span>
         </h2>
 
         <div className="home-card">

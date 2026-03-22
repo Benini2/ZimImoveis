@@ -222,7 +222,7 @@ app.delete("/imoveis/:id", verificarToken, async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 8800;
-app.listen(PORT, "0.0.0.0", () => {
+const PORT = 8800;
+app.listen(PORT, () => {
   console.log("Servidor rodando");
 });
